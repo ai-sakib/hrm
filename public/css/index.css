@@ -1,0 +1,22 @@
+:focus-visible {
+    outline: -webkit-focus-ring-color auto 0px !important;
+    outline-color: -webkit-focus-ring-color;
+    outline-style: auto;
+    outline-width: 0px !important;
+}
+@media print{
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    .page-break{
+        page-break-after:always; 
+    }
+
+    @page {
+        /* size: portrait !important; */
+        size: 22cm 29.7cm !important;
+        /*margin: 10mm 10mm 10mm 10mm;*/
+        /* change the margins as you want them to be. */
+    }
+}

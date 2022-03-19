@@ -48,7 +48,7 @@
                 <div v-for="(weekDay, index) in weekDays" :key="index" 
                 :class="{
                     'border-r-0': (index + 1) % weekDays.length !== 0, 
-                    'bg-rose-500': weekDay.is_weekend
+                    'bg-rose-400': weekDay.is_weekend
                     }" 
                 class="border border-gray-200 bg-teal-500 text-white font-semibold h-10 w-full inline-flex justify-center items-center">
                     {{ weekDay.day }}
@@ -87,16 +87,20 @@
                     </div>
                 </template> -->
 
-                <template v-for="box in fixedBoxes" :key="box">
+                <template v-for="boxNumber in fixedBoxes" :key="boxNumber">
                     <div 
                     :class="[
                     {
-                        'bg-transparent': isEmptyBox = (day =  box - emptyBoxes) > daysInMonth || 
+                        
+                        'bg-transparent': isEmptyBox = (day =  boxNumber - emptyBoxes) > daysInMonth || 
                         (day < 1 && fixedBoxes + day > daysInMonth),
-                        'border-r-0': box  % weekDays.length !== 0, 
-                        'px-1 bg-emerald-500 text-white font-bold': 
+                        'border-r-0': boxNumber  % weekDays.length !== 0, 
+                        
+                        'bg-emerald-500 text-white font-bold': 
                         (currentHoliday = holidays.find(holiday => holiday.day === day && holiday.month == monthIndex && holiday.year == yearIndex)) || 
                         (emptyBoxHoliday = holidays.find(holiday => holiday.day === (emptyBoxDay = fixedBoxes + day) && holiday.month == monthIndex && holiday.year == yearIndex)),
+                        'text-rose-500 font-bold': isWeekend(boxNumber) && !currentHoliday && !emptyBoxHoliday,
+                        
                     }
                     ]"
                     class="m-0 p-0 border border-t-0 border-slate-200 bg-white text-gray-600 h-16 w-full inline-flex justify-center items-center flex-col text-center" >
@@ -203,7 +207,12 @@
         },
 
         methods: {
-            
+            isWeekend(boxNumber){
+                let modulas = boxNumber % 7
+                let day = modulas === 0 ? 7 : modulas
+                let isWeekend = this.weekDays.find(weekDay => weekDay.id === day)?.is_weekend
+                return isWeekend
+            },
             previousMonth()
             {
                 let monthIndex = this.monthIndex

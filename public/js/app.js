@@ -19674,6 +19674,16 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    isWeekend: function isWeekend(boxNumber) {
+      var _this$weekDays$find;
+
+      var modulas = boxNumber % 7;
+      var day = modulas === 0 ? 7 : modulas;
+      var isWeekend = (_this$weekDays$find = this.weekDays.find(function (weekDay) {
+        return weekDay.id === day;
+      })) === null || _this$weekDays$find === void 0 ? void 0 : _this$weekDays$find.is_weekend;
+      return isWeekend;
+    },
     previousMonth: function previousMonth() {
       var monthIndex = this.monthIndex;
       var yearIndex = this.yearIndex;
@@ -20767,26 +20777,27 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       key: index,
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([{
         'border-r-0': (index + 1) % $data.weekDays.length !== 0,
-        'bg-rose-500': weekDay.is_weekend
+        'bg-rose-400': weekDay.is_weekend
       }, "border border-gray-200 bg-teal-500 text-white font-semibold h-10 w-full inline-flex justify-center items-center"])
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(weekDay.day), 3
     /* TEXT, CLASS */
     );
   }), 128
   /* KEYED_FRAGMENT */
-  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" For Empty Colums "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-for=\"emptyColumn in emptyBoxes\" :key=\"emptyColumn\"\r\n                :class=\"\r\n                {\r\n                    'bg-transparent' : (upperColumn = (fixedBoxes - emptyBoxes + emptyColumn)) > daysInMonth,\r\n                    'px-1 bg-emerald-500 text-white font-bold': currentHoliday = holidays.find(holiday => holiday.day === upperColumn && holiday.month == monthIndex && holiday.year == yearIndex)\r\n                }\"\r\n                class=\"m-0 p-0 border border-r-0 border-t-0 border-slate-200 bg-white text-gray-600 h-16 w-full inline-flex justify-center items-center flex-col text-center\" >\r\n                    <span class=\"flex flex-col\" v-if=\"upperColumn <= daysInMonth \">\r\n                        {{ upperColumn }}\r\n                        <span class=\"text-xs\">{{ currentHoliday?.event }}</span>\r\n                    </span>\r\n                </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" For days in a month "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <template v-for=\"day in (fixedBoxes - emptyBoxes)\" :key=\"day\">\r\n                    <div\r\n                    :class=\"[\r\n                    {\r\n                        'bg-transparent': day > daysInMonth,\r\n                        'border-r-0': (day + emptyBoxes) % weekDays.length !== 0, \r\n                        'px-1 bg-emerald-500 text-white font-bold': currentHoliday = holidays.find(holiday => holiday.day === day && holiday.month == monthIndex && holiday.year == yearIndex),\r\n                    }\r\n                    ]\"\r\n                    class=\"m-0 p-0 border border-t-0 border-slate-200 bg-white text-gray-600 h-16 w-full inline-flex justify-center items-center flex-col text-center\" >\r\n                        <div v-if=\"day <= daysInMonth\" class=\"inline-flex flex-col\">\r\n                            {{ day }}\r\n                            <span class=\"text-xs\">{{ currentHoliday?.event }}</span>\r\n                        </div>\r\n                        \r\n                    </div>\r\n                </template> "), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.fixedBoxes, function (box) {
+  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" For Empty Colums "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-for=\"emptyColumn in emptyBoxes\" :key=\"emptyColumn\"\r\n                :class=\"\r\n                {\r\n                    'bg-transparent' : (upperColumn = (fixedBoxes - emptyBoxes + emptyColumn)) > daysInMonth,\r\n                    'px-1 bg-emerald-500 text-white font-bold': currentHoliday = holidays.find(holiday => holiday.day === upperColumn && holiday.month == monthIndex && holiday.year == yearIndex)\r\n                }\"\r\n                class=\"m-0 p-0 border border-r-0 border-t-0 border-slate-200 bg-white text-gray-600 h-16 w-full inline-flex justify-center items-center flex-col text-center\" >\r\n                    <span class=\"flex flex-col\" v-if=\"upperColumn <= daysInMonth \">\r\n                        {{ upperColumn }}\r\n                        <span class=\"text-xs\">{{ currentHoliday?.event }}</span>\r\n                    </span>\r\n                </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" For days in a month "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <template v-for=\"day in (fixedBoxes - emptyBoxes)\" :key=\"day\">\r\n                    <div\r\n                    :class=\"[\r\n                    {\r\n                        'bg-transparent': day > daysInMonth,\r\n                        'border-r-0': (day + emptyBoxes) % weekDays.length !== 0, \r\n                        'px-1 bg-emerald-500 text-white font-bold': currentHoliday = holidays.find(holiday => holiday.day === day && holiday.month == monthIndex && holiday.year == yearIndex),\r\n                    }\r\n                    ]\"\r\n                    class=\"m-0 p-0 border border-t-0 border-slate-200 bg-white text-gray-600 h-16 w-full inline-flex justify-center items-center flex-col text-center\" >\r\n                        <div v-if=\"day <= daysInMonth\" class=\"inline-flex flex-col\">\r\n                            {{ day }}\r\n                            <span class=\"text-xs\">{{ currentHoliday?.event }}</span>\r\n                        </div>\r\n                        \r\n                    </div>\r\n                </template> "), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.fixedBoxes, function (boxNumber) {
     var _ctx$currentHoliday, _ctx$emptyBoxHoliday;
 
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
-      key: box,
+      key: boxNumber,
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([[{
-        'bg-transparent': _ctx.isEmptyBox = (_ctx.day = box - $options.emptyBoxes) > $options.daysInMonth || _ctx.day < 1 && $options.fixedBoxes + _ctx.day > $options.daysInMonth,
-        'border-r-0': box % $data.weekDays.length !== 0,
-        'px-1 bg-emerald-500 text-white font-bold': (_ctx.currentHoliday = $data.holidays.find(function (holiday) {
+        'bg-transparent': _ctx.isEmptyBox = (_ctx.day = boxNumber - $options.emptyBoxes) > $options.daysInMonth || _ctx.day < 1 && $options.fixedBoxes + _ctx.day > $options.daysInMonth,
+        'border-r-0': boxNumber % $data.weekDays.length !== 0,
+        'bg-emerald-500 text-white font-bold': (_ctx.currentHoliday = $data.holidays.find(function (holiday) {
           return holiday.day === _ctx.day && holiday.month == $data.monthIndex && holiday.year == $data.yearIndex;
         })) || (_ctx.emptyBoxHoliday = $data.holidays.find(function (holiday) {
           return holiday.day === (_ctx.emptyBoxDay = $options.fixedBoxes + _ctx.day) && holiday.month == $data.monthIndex && holiday.year == $data.yearIndex;
-        }))
+        })),
+        'text-rose-500 font-bold': $options.isWeekend(boxNumber) && !_ctx.currentHoliday && !_ctx.emptyBoxHoliday
       }], "m-0 p-0 border border-t-0 border-slate-200 bg-white text-gray-600 h-16 w-full inline-flex justify-center items-center flex-col text-center"])
     }, [!_ctx.isEmptyBox ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
       key: 0

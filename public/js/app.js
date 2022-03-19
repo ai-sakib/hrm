@@ -20716,13 +20716,10 @@ var _hoisted_14 = {
   "class": "text-xs"
 };
 var _hoisted_15 = {
-  "class": "text-xs"
-};
-var _hoisted_16 = {
   key: 1,
   "class": "flex justify-center items-center h-[500px]"
 };
-var _hoisted_17 = ["src"];
+var _hoisted_16 = ["src"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_back_button = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("back-button");
 
@@ -20730,7 +20727,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[0] || (_cache[0] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.previousMonth && $options.previousMonth.apply($options, arguments);
     }, ["prevent"])),
-    "class": "flex justify-center items-center text-gray-600 w-8 h-8 rounded-full font-normal"
+    "class": "flex justify-center items-center text-gray-600 w-8 h-8 rounded-full font-normal hover:bg-cyan-500 hover:text-white duration-300"
   }, _hoisted_6), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
     "class": "border-gray-200 rounded-md block mt-0 text-xs dark:border-gray-600 dark:bg-gray-700 focus:border-blue-300 focus:outline-none focus:shadow-outline-blue dark:text-gray-300 dark:focus:shadow-outline-gray",
     placeholder: "Customer Name",
@@ -20771,7 +20768,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.nextMonth && $options.nextMonth.apply($options, arguments);
     }, ["prevent"])),
-    "class": "flex justify-center items-center text-gray-600 w-8 h-8 rounded-full font-normal"
+    "class": "flex justify-center items-center text-gray-600 w-8 h-8 rounded-full font-normal hover:bg-cyan-500 hover:text-white duration-300"
   }, _hoisted_11)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_back_button)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Content "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" \r\n            /**\r\n                *Fixed the rows to fixedBoxes (7 days * 5 rows)\r\n                *1st day should start from after empty columns\r\n                *Javascript returns 0 for sunday, so, I saved the first day of month to empty colums,\r\n                    Because My weekday table is also starts from sunday \r\n\r\n             */\r\n         "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.weekDays, function (weekDay, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: index,
@@ -20784,53 +20781,43 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     );
   }), 128
   /* KEYED_FRAGMENT */
-  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" For Empty Colums "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-for=\"emptyColumn in emptyBoxes\" :key=\"emptyColumn\"\r\n                :class=\"\r\n                {\r\n                    'bg-transparent' : (upperColumn = (fixedBoxes - emptyBoxes + emptyColumn)) > daysInMonth,\r\n                    'px-1 bg-emerald-500 text-white font-bold': currentHoliday = holidays.find(holiday => holiday.day === upperColumn && holiday.month == monthIndex && holiday.year == yearIndex)\r\n                }\"\r\n                class=\"m-0 p-0 border border-r-0 border-t-0 border-slate-200 bg-white text-gray-600 h-16 w-full inline-flex justify-center items-center flex-col text-center\" >\r\n                    <span class=\"flex flex-col\" v-if=\"upperColumn <= daysInMonth \">\r\n                        {{ upperColumn }}\r\n                        <span class=\"text-xs\">{{ currentHoliday?.event }}</span>\r\n                    </span>\r\n                </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" For days in a month "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <template v-for=\"day in (fixedBoxes - emptyBoxes)\" :key=\"day\">\r\n                    <div\r\n                    :class=\"[\r\n                    {\r\n                        'bg-transparent': day > daysInMonth,\r\n                        'border-r-0': (day + emptyBoxes) % weekDays.length !== 0, \r\n                        'px-1 bg-emerald-500 text-white font-bold': currentHoliday = holidays.find(holiday => holiday.day === day && holiday.month == monthIndex && holiday.year == yearIndex),\r\n                    }\r\n                    ]\"\r\n                    class=\"m-0 p-0 border border-t-0 border-slate-200 bg-white text-gray-600 h-16 w-full inline-flex justify-center items-center flex-col text-center\" >\r\n                        <div v-if=\"day <= daysInMonth\" class=\"inline-flex flex-col\">\r\n                            {{ day }}\r\n                            <span class=\"text-xs\">{{ currentHoliday?.event }}</span>\r\n                        </div>\r\n                        \r\n                    </div>\r\n                </template> "), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.fixedBoxes, function (boxNumber) {
-    var _ctx$currentHoliday, _ctx$emptyBoxHoliday;
+  )), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.fixedBoxes, function (boxNumber) {
+    var _ctx$currentHoliday;
 
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: boxNumber,
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([[{
-        'bg-transparent': _ctx.isEmptyBox = (_ctx.day = boxNumber - $options.emptyBoxes) > $options.daysInMonth || _ctx.day < 1 && $options.fixedBoxes + _ctx.day > $options.daysInMonth,
+        'bg-transparent': _ctx.isEmptyBox = (_ctx.currentDay = _ctx.day = boxNumber - $options.emptyBoxes) > $options.daysInMonth || _ctx.day < 1 && (_ctx.currentDay = $options.fixedBoxes + _ctx.day) > $options.daysInMonth,
         'border-r-0': boxNumber % $data.weekDays.length !== 0,
-        'bg-emerald-500 text-white font-bold': (_ctx.currentHoliday = $data.holidays.find(function (holiday) {
-          return holiday.day === _ctx.day && holiday.month == $data.monthIndex && holiday.year == $data.yearIndex;
-        })) || (_ctx.emptyBoxHoliday = $data.holidays.find(function (holiday) {
-          return holiday.day === (_ctx.emptyBoxDay = $options.fixedBoxes + _ctx.day) && holiday.month == $data.monthIndex && holiday.year == $data.yearIndex;
-        })),
-        'text-rose-500 font-bold': $options.isWeekend(boxNumber) && !_ctx.currentHoliday && !_ctx.emptyBoxHoliday
+        'bg-emerald-500 text-white font-bold': _ctx.currentHoliday = $data.holidays.find(function (holiday) {
+          return holiday.day === _ctx.currentDay && holiday.month == $data.monthIndex && holiday.year == $data.yearIndex;
+        }),
+        'text-rose-500 font-bold': $options.isWeekend(boxNumber) && !_ctx.currentHoliday
       }], "m-0 p-0 border border-t-0 border-slate-200 bg-white text-gray-600 h-16 w-full inline-flex justify-center items-center flex-col text-center"])
     }, [!_ctx.isEmptyBox ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
       key: 0
-    }, [_ctx.day <= $options.daysInMonth && _ctx.day > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    }, [_ctx.currentDay > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
       key: 0
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.day), 1
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.currentDay), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_ctx$currentHoliday = _ctx.currentHoliday) === null || _ctx$currentHoliday === void 0 ? void 0 : _ctx$currentHoliday.event), 1
     /* TEXT */
     )], 64
     /* STABLE_FRAGMENT */
-    )) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
-      key: 1
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.emptyBoxDay), 1
-    /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_ctx$emptyBoxHoliday = _ctx.emptyBoxHoliday) === null || _ctx$emptyBoxHoliday === void 0 ? void 0 : _ctx$emptyBoxHoliday.event), 1
-    /* TEXT */
-    )], 64
-    /* STABLE_FRAGMENT */
-    ))], 2112
+    )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2112
     /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */
     )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2
     /* CLASS */
     );
   }), 128
   /* KEYED_FRAGMENT */
-  ))])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.isLoading ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+  ))])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.isLoading ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
     "class": "h-24 w-24",
     src: $data.loader,
     alt: "Loader"
   }, null, 8
   /* PROPS */
-  , _hoisted_17)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64
+  , _hoisted_16)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64
   /* STABLE_FRAGMENT */
   );
 }

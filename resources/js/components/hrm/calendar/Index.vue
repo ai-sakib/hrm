@@ -4,7 +4,7 @@
         <div class="my-5 grid grid-cols-3 ">
             <h2 class="text-2xl font-semibold text-gray-700 dark:text-gray-200">Calendar</h2>
             <div class="my-2 flex gap-2 justify-center items-center">
-                <button @click.prevent="previousMonth" class="flex justify-center items-center  text-gray-600 w-8 h-8 rounded-full font-normal">
+                <button @click.prevent="previousMonth" class="flex justify-center items-center  text-gray-600 w-8 h-8 rounded-full font-normal hover:bg-cyan-500 hover:text-white duration-300">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
                     </svg>
@@ -23,7 +23,7 @@
                         </option>
                     </select>
                 </div>
-                <button @click.prevent="nextMonth" class="flex justify-center items-center  text-gray-600 w-8 h-8 rounded-full font-normal">
+                <button @click.prevent="nextMonth" class="flex justify-center items-center  text-gray-600 w-8 h-8 rounded-full font-normal hover:bg-cyan-500 hover:text-white duration-300">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
                     </svg>
@@ -54,66 +54,24 @@
                     {{ weekDay.day }}
                 </div>
 
-                <!-- For Empty Colums -->
-                <!-- <div v-for="emptyColumn in emptyBoxes" :key="emptyColumn"
-                :class="
-                {
-                    'bg-transparent' : (upperColumn = (fixedBoxes - emptyBoxes + emptyColumn)) > daysInMonth,
-                    'px-1 bg-emerald-500 text-white font-bold': currentHoliday = holidays.find(holiday => holiday.day === upperColumn && holiday.month == monthIndex && holiday.year == yearIndex)
-                }"
-                class="m-0 p-0 border border-r-0 border-t-0 border-slate-200 bg-white text-gray-600 h-16 w-full inline-flex justify-center items-center flex-col text-center" >
-                    <span class="flex flex-col" v-if="upperColumn <= daysInMonth ">
-                        {{ upperColumn }}
-                        <span class="text-xs">{{ currentHoliday?.event }}</span>
-                    </span>
-                </div> -->
-
-                <!-- For days in a month -->
-                <!-- <template v-for="day in (fixedBoxes - emptyBoxes)" :key="day">
-                    <div
-                    :class="[
-                    {
-                        'bg-transparent': day > daysInMonth,
-                        'border-r-0': (day + emptyBoxes) % weekDays.length !== 0, 
-                        'px-1 bg-emerald-500 text-white font-bold': currentHoliday = holidays.find(holiday => holiday.day === day && holiday.month == monthIndex && holiday.year == yearIndex),
-                    }
-                    ]"
-                    class="m-0 p-0 border border-t-0 border-slate-200 bg-white text-gray-600 h-16 w-full inline-flex justify-center items-center flex-col text-center" >
-                        <div v-if="day <= daysInMonth" class="inline-flex flex-col">
-                            {{ day }}
-                            <span class="text-xs">{{ currentHoliday?.event }}</span>
-                        </div>
-                        
-                    </div>
-                </template> -->
-
                 <template v-for="boxNumber in fixedBoxes" :key="boxNumber">
                     <div 
                     :class="[
                     {
-                        
-                        'bg-transparent': isEmptyBox = (day =  boxNumber - emptyBoxes) > daysInMonth || 
-                        (day < 1 && fixedBoxes + day > daysInMonth),
+                        'bg-transparent': isEmptyBox = (currentDay = day =  boxNumber - emptyBoxes) > daysInMonth || (day < 1 && (currentDay = fixedBoxes + day) > daysInMonth),
                         'border-r-0': boxNumber  % weekDays.length !== 0, 
                         
                         'bg-emerald-500 text-white font-bold': 
-                        (currentHoliday = holidays.find(holiday => holiday.day === day && holiday.month == monthIndex && holiday.year == yearIndex)) || 
-                        (emptyBoxHoliday = holidays.find(holiday => holiday.day === (emptyBoxDay = fixedBoxes + day) && holiday.month == monthIndex && holiday.year == yearIndex)),
-                        'text-rose-500 font-bold': isWeekend(boxNumber) && !currentHoliday && !emptyBoxHoliday,
-                        
+                        (currentHoliday = holidays.find(holiday => holiday.day === currentDay && holiday.month == monthIndex && holiday.year == yearIndex)),
+                        'text-rose-500 font-bold': isWeekend(boxNumber) && !currentHoliday,
                     }
                     ]"
                     class="m-0 p-0 border border-t-0 border-slate-200 bg-white text-gray-600 h-16 w-full inline-flex justify-center items-center flex-col text-center" >
                         <template v-if="!isEmptyBox" class="inline-flex flex-col">
 
-                            <template v-if="day <= daysInMonth && day > 0">
-                                <span> {{ day }} </span>
+                            <template v-if="currentDay > 0">
+                                <span> {{ currentDay }} </span>
                                 <span class="text-xs">{{ currentHoliday?.event }}</span>
-                            </template>
-
-                            <template v-else>
-                                <span> {{ emptyBoxDay }} </span>
-                                <span class="text-xs">{{emptyBoxHoliday?.event }}</span>
                             </template>
 
                         </template>

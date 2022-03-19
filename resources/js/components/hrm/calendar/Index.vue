@@ -28,48 +28,93 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
                     </svg>
                 </button>
-                <!-- <button class="flex justify-center items-center bg-emerald-500 text-white w-8 h-8 rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                    </svg>
-                </button> -->
-                
             </div>
             <back-button></back-button>
         </div>
         
         
         <!-- Content -->
-        <div class="px-0 sm:px-0 lg:px-48 w-full overflow-hidden shadow-xs">
+        <!-- 
+            /**
+                *Fixed the rows to fixedBoxes (7 days * 5 rows)
+                *1st day should start from after empty columns
+                *Javascript returns 0 for sunday, so, I saved the first day of month to empty colums,
+                    Because My weekday table is also starts from sunday 
+
+             */
+         -->
+        <div class="px-0 sm:px-0 lg:px-52 w-full overflow-hidden shadow-xs">
             <div class="grid grid-cols-7 gap-0 rounded-full">
                 <div v-for="(weekDay, index) in weekDays" :key="index" 
                 :class="{
                     'border-r-0': (index + 1) % weekDays.length !== 0, 
-                    'border-b-0' : (index + 1) > emptyColumns,
-                    'bg-red-400': weekDay.is_weekend
+                    'bg-rose-500': weekDay.is_weekend
                     }" 
-                class="border  border-gray-200 bg-cyan-500 text-white font-semibold h-10 w-full inline-flex justify-center items-center">
+                class="border border-gray-200 bg-teal-500 text-white font-semibold h-10 w-full inline-flex justify-center items-center">
                     {{ weekDay.day }}
                 </div>
-                
-                <div v-for="day in daysInMonth" :key="day" 
-                :class="[
-                {'col-start-2' : day === 1 && emptyColumns === 1},
-                {'col-start-3' : day === 1 && emptyColumns === 2},
-                {'col-start-4' : day === 1 && emptyColumns === 3},
-                {'col-start-5' : day === 1 && emptyColumns === 4},
-                {'col-start-6' : day === 1 && emptyColumns === 5},
-                {'col-start-7' : day === 1 && emptyColumns === 6},
+
+                <!-- For Empty Colums -->
+                <!-- <div v-for="emptyColumn in emptyBoxes" :key="emptyColumn"
+                :class="
                 {
-                    'border-r-0': (day + emptyColumns) % weekDays.length !== 0 && day !== daysInMonth, 
-                    'border-b-0': (daysInMonth - day) >= weekDays.length, 
-                    'px-1 bg-emerald-500 text-white font-bold': currentHoliday = holidays.find(holiday => holiday.day === day && holiday.month == monthIndex && holiday.year == yearIndex),
-                }
-                ]"
-                class="m-0 p-0 border border-slate-200 bg-white text-gray-600 h-16 w-full inline-flex justify-center items-center flex-col text-center" >
-                    {{ day }}
-                    <span class="text-xs">{{ currentHoliday?.event }}</span>
-                </div>
+                    'bg-transparent' : (upperColumn = (fixedBoxes - emptyBoxes + emptyColumn)) > daysInMonth,
+                    'px-1 bg-emerald-500 text-white font-bold': currentHoliday = holidays.find(holiday => holiday.day === upperColumn && holiday.month == monthIndex && holiday.year == yearIndex)
+                }"
+                class="m-0 p-0 border border-r-0 border-t-0 border-slate-200 bg-white text-gray-600 h-16 w-full inline-flex justify-center items-center flex-col text-center" >
+                    <span class="flex flex-col" v-if="upperColumn <= daysInMonth ">
+                        {{ upperColumn }}
+                        <span class="text-xs">{{ currentHoliday?.event }}</span>
+                    </span>
+                </div> -->
+
+                <!-- For days in a month -->
+                <!-- <template v-for="day in (fixedBoxes - emptyBoxes)" :key="day">
+                    <div
+                    :class="[
+                    {
+                        'bg-transparent': day > daysInMonth,
+                        'border-r-0': (day + emptyBoxes) % weekDays.length !== 0, 
+                        'px-1 bg-emerald-500 text-white font-bold': currentHoliday = holidays.find(holiday => holiday.day === day && holiday.month == monthIndex && holiday.year == yearIndex),
+                    }
+                    ]"
+                    class="m-0 p-0 border border-t-0 border-slate-200 bg-white text-gray-600 h-16 w-full inline-flex justify-center items-center flex-col text-center" >
+                        <div v-if="day <= daysInMonth" class="inline-flex flex-col">
+                            {{ day }}
+                            <span class="text-xs">{{ currentHoliday?.event }}</span>
+                        </div>
+                        
+                    </div>
+                </template> -->
+
+                <template v-for="box in fixedBoxes" :key="box">
+                    <div 
+                    :class="[
+                    {
+                        'bg-transparent': isEmptyBox = (day =  box - emptyBoxes) > daysInMonth || 
+                        (day < 1 && fixedBoxes + day > daysInMonth),
+                        'border-r-0': box  % weekDays.length !== 0, 
+                        'px-1 bg-emerald-500 text-white font-bold': 
+                        (currentHoliday = holidays.find(holiday => holiday.day === day && holiday.month == monthIndex && holiday.year == yearIndex)) || 
+                        (emptyBoxHoliday = holidays.find(holiday => holiday.day === (emptyBoxDay = fixedBoxes + day) && holiday.month == monthIndex && holiday.year == yearIndex)),
+                    }
+                    ]"
+                    class="m-0 p-0 border border-t-0 border-slate-200 bg-white text-gray-600 h-16 w-full inline-flex justify-center items-center flex-col text-center" >
+                        <template v-if="!isEmptyBox" class="inline-flex flex-col">
+
+                            <template v-if="day <= daysInMonth && day > 0">
+                                <span> {{ day }} </span>
+                                <span class="text-xs">{{ currentHoliday?.event }}</span>
+                            </template>
+
+                            <template v-else>
+                                <span> {{ emptyBoxDay }} </span>
+                                <span class="text-xs">{{emptyBoxHoliday?.event }}</span>
+                            </template>
+
+                        </template>
+                    </div>
+                </template>
             </div>
         </div>
     </div>
@@ -84,6 +129,8 @@
     export default {
         data(){
             return {
+                fixedRows: 5,
+
                 currentYear: this.$filters.currentYear(),
                 yearStartBeforeCurrent: 3,
                 yearRange: 11,
@@ -106,14 +153,51 @@
                 return 0
             },
             totalRows(){
-                return Math.ceil((this.daysInMonth + this.emptyColumns) / 7)
+                return Math.ceil((this.daysInMonth + this.emptyBoxes) / 7)
             },
-            emptyColumns(){
+            fixedBoxes(){
+                return this.weekDays.length * this.fixedRows
+            },
+
+            emptyBoxes(){
+                
+                let firstDayOfWeek = this.weekDays[0].day
                 let firstDayOfMonth = this.$filters.firstDayOfMonth(this.yearIndex, this.monthIndex)
-                return firstDayOfMonth
+                let emptyBoxes
+
+                switch (firstDayOfWeek) {
+                    
+                    case "Sunday":
+                        emptyBoxes = firstDayOfMonth + 7
+                        break;
+                    case "Monday":
+                        emptyBoxes = firstDayOfMonth + 6
+                        break;
+                    case "Tuesday":
+                        emptyBoxes = firstDayOfMonth + 5
+                        break;
+                    case "Wednesday":
+                        emptyBoxes = firstDayOfMonth + 4
+                        break;
+                    case "Thursday":
+                        emptyBoxes = firstDayOfMonth + 3
+                        break;
+                    case "Friday":
+                        emptyBoxes = firstDayOfMonth + 2
+                        break;
+                    case "Saturday":
+                        emptyBoxes = firstDayOfMonth + 1
+                        break;
+                    
+                    default:
+                        emptyBoxes = firstDayOfMonth //Sunday
+                        break;
+                }
+
+                return emptyBoxes % 7
             },
             emptyColumnClass(){
-                let colStartValue = this.emptyColumns + 1
+                let colStartValue = this.emptyBoxes + 1
                 return "col-start-" + (colStartValue);
             }
         },
@@ -136,7 +220,7 @@
                     this.yearIndex = yearIndex
                 }
                 this.monthIndex = monthIndex
-                
+                console.log(this.emptyBoxes)
             },
             nextMonth()
             {
@@ -174,15 +258,13 @@
             },
         },
 
-        async created() {
+        created() {
             this.getWeekDays()
-            // this.getHolidays()
             this.yearIndex = this.currentYear
             this.monthIndex = this.$filters.currentMonth()
         },
 
         mounted(){
-            console.log(this.emptyColumnClass)
             this.$watch(
                 (vm) => [vm.yearIndex],
                 (val) => {

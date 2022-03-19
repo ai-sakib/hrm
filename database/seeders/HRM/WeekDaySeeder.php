@@ -36,7 +36,7 @@ class WeekDaySeeder extends Seeder
             [
                 'day' => 'Thursday',
                 'is_weekend' => false
-            ], 
+            ],
             [
                 'day' => 'Friday',
                 'is_weekend' => true
@@ -44,7 +44,8 @@ class WeekDaySeeder extends Seeder
             [
                 'day' => 'Saturday',
                 'is_weekend' => true
-            ]
+            ],
+            
         ];
         
         WeekDay::insert($weekDays);

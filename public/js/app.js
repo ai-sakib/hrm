@@ -19593,19 +19593,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _assets_gifs_loader_gif__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../assets/gifs/loader.gif */ "./resources/js/assets/gifs/loader.gif");
-
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
+/* harmony import */ var _assets_gifs_loader_gif__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../assets/gifs/loader.gif */ "./resources/js/assets/gifs/loader.gif");
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      fixedRows: 5,
       currentYear: this.$filters.currentYear(),
       yearStartBeforeCurrent: 3,
       yearRange: 11,
@@ -19616,7 +19609,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       holidays: [],
       monthlyDays: [],
       isLoading: true,
-      loader: _assets_gifs_loader_gif__WEBPACK_IMPORTED_MODULE_1__["default"]
+      loader: _assets_gifs_loader_gif__WEBPACK_IMPORTED_MODULE_0__["default"]
     };
   },
   computed: {
@@ -19628,14 +19621,55 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return 0;
     },
     totalRows: function totalRows() {
-      return Math.ceil((this.daysInMonth + this.emptyColumns) / 7);
+      return Math.ceil((this.daysInMonth + this.emptyBoxes) / 7);
     },
-    emptyColumns: function emptyColumns() {
+    fixedBoxes: function fixedBoxes() {
+      return this.weekDays.length * this.fixedRows;
+    },
+    emptyBoxes: function emptyBoxes() {
+      var firstDayOfWeek = this.weekDays[0].day;
       var firstDayOfMonth = this.$filters.firstDayOfMonth(this.yearIndex, this.monthIndex);
-      return firstDayOfMonth;
+      var emptyBoxes;
+
+      switch (firstDayOfWeek) {
+        case "Sunday":
+          emptyBoxes = firstDayOfMonth + 7;
+          break;
+
+        case "Monday":
+          emptyBoxes = firstDayOfMonth + 6;
+          break;
+
+        case "Tuesday":
+          emptyBoxes = firstDayOfMonth + 5;
+          break;
+
+        case "Wednesday":
+          emptyBoxes = firstDayOfMonth + 4;
+          break;
+
+        case "Thursday":
+          emptyBoxes = firstDayOfMonth + 3;
+          break;
+
+        case "Friday":
+          emptyBoxes = firstDayOfMonth + 2;
+          break;
+
+        case "Saturday":
+          emptyBoxes = firstDayOfMonth + 1;
+          break;
+
+        default:
+          emptyBoxes = firstDayOfMonth; //Sunday
+
+          break;
+      }
+
+      return emptyBoxes % 7;
     },
     emptyColumnClass: function emptyColumnClass() {
-      var colStartValue = this.emptyColumns + 1;
+      var colStartValue = this.emptyBoxes + 1;
       return "col-start-" + colStartValue;
     }
   },
@@ -19658,6 +19692,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       this.monthIndex = monthIndex;
+      console.log(this.emptyBoxes);
     },
     nextMonth: function nextMonth() {
       var monthIndex = this.monthIndex;
@@ -19699,35 +19734,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   created: function created() {
-    var _this3 = this;
-
-    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _this3.getWeekDays(); // this.getHolidays()
-
-
-              _this3.yearIndex = _this3.currentYear;
-              _this3.monthIndex = _this3.$filters.currentMonth();
-
-            case 3:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee);
-    }))();
+    this.getWeekDays();
+    this.yearIndex = this.currentYear;
+    this.monthIndex = this.$filters.currentMonth();
   },
   mounted: function mounted() {
-    var _this4 = this;
+    var _this3 = this;
 
-    console.log(this.emptyColumnClass);
     this.$watch(function (vm) {
       return [vm.yearIndex];
     }, function (val) {
-      _this4.getHolidays();
+      _this3.getHolidays();
     }, {
       immediate: true,
       deep: true
@@ -20396,6 +20413,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     validateWeekDays: function validateWeekDays() {
+      var weekendLimit = 3;
       var weekendDays = this.weekDays.filter(function (weekDay) {
         return [1, true].includes(weekDay.is_weekend);
       });
@@ -20406,9 +20424,9 @@ __webpack_require__.r(__webpack_exports__);
         return false;
       }
 
-      if (weekendDays.length > 3) {
+      if (weekendDays.length > weekendLimit) {
         // this.weekDays[index].is_weekend = false
-        this.$messages.error("Weekend Can't Be More Than 2 Days");
+        this.$messages.error("Weekend Can't Be More Than ".concat(weekendLimit, " Days"));
         return false;
       }
 
@@ -20679,7 +20697,7 @@ var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 
 var _hoisted_11 = [_hoisted_10];
 var _hoisted_12 = {
-  "class": "px-0 sm:px-0 lg:px-48 w-full overflow-hidden shadow-xs"
+  "class": "px-0 sm:px-0 lg:px-52 w-full overflow-hidden shadow-xs"
 };
 var _hoisted_13 = {
   "class": "grid grid-cols-7 gap-0 rounded-full"
@@ -20688,10 +20706,13 @@ var _hoisted_14 = {
   "class": "text-xs"
 };
 var _hoisted_15 = {
+  "class": "text-xs"
+};
+var _hoisted_16 = {
   key: 1,
   "class": "flex justify-center items-center h-[500px]"
 };
-var _hoisted_16 = ["src"];
+var _hoisted_17 = ["src"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_back_button = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("back-button");
 
@@ -20741,59 +20762,64 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $options.nextMonth && $options.nextMonth.apply($options, arguments);
     }, ["prevent"])),
     "class": "flex justify-center items-center text-gray-600 w-8 h-8 rounded-full font-normal"
-  }, _hoisted_11), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <button class=\"flex justify-center items-center bg-emerald-500 text-white w-8 h-8 rounded-full\">\r\n                    <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-5 w-5\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\" stroke-width=\"2\">\r\n                    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M9 5l7 7-7 7\" />\r\n                    </svg>\r\n                </button> ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_back_button)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Content "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.weekDays, function (weekDay, index) {
+  }, _hoisted_11)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_back_button)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Content "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" \r\n            /**\r\n                *Fixed the rows to fixedBoxes (7 days * 5 rows)\r\n                *1st day should start from after empty columns\r\n                *Javascript returns 0 for sunday, so, I saved the first day of month to empty colums,\r\n                    Because My weekday table is also starts from sunday \r\n\r\n             */\r\n         "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.weekDays, function (weekDay, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: index,
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([{
         'border-r-0': (index + 1) % $data.weekDays.length !== 0,
-        'border-b-0': index + 1 > $options.emptyColumns,
-        'bg-red-400': weekDay.is_weekend
-      }, "border border-gray-200 bg-cyan-500 text-white font-semibold h-10 w-full inline-flex justify-center items-center"])
+        'bg-rose-500': weekDay.is_weekend
+      }, "border border-gray-200 bg-teal-500 text-white font-semibold h-10 w-full inline-flex justify-center items-center"])
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(weekDay.day), 3
     /* TEXT, CLASS */
     );
   }), 128
   /* KEYED_FRAGMENT */
-  )), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.daysInMonth, function (day) {
-    var _ctx$currentHoliday;
+  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" For Empty Colums "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div v-for=\"emptyColumn in emptyBoxes\" :key=\"emptyColumn\"\r\n                :class=\"\r\n                {\r\n                    'bg-transparent' : (upperColumn = (fixedBoxes - emptyBoxes + emptyColumn)) > daysInMonth,\r\n                    'px-1 bg-emerald-500 text-white font-bold': currentHoliday = holidays.find(holiday => holiday.day === upperColumn && holiday.month == monthIndex && holiday.year == yearIndex)\r\n                }\"\r\n                class=\"m-0 p-0 border border-r-0 border-t-0 border-slate-200 bg-white text-gray-600 h-16 w-full inline-flex justify-center items-center flex-col text-center\" >\r\n                    <span class=\"flex flex-col\" v-if=\"upperColumn <= daysInMonth \">\r\n                        {{ upperColumn }}\r\n                        <span class=\"text-xs\">{{ currentHoliday?.event }}</span>\r\n                    </span>\r\n                </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" For days in a month "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <template v-for=\"day in (fixedBoxes - emptyBoxes)\" :key=\"day\">\r\n                    <div\r\n                    :class=\"[\r\n                    {\r\n                        'bg-transparent': day > daysInMonth,\r\n                        'border-r-0': (day + emptyBoxes) % weekDays.length !== 0, \r\n                        'px-1 bg-emerald-500 text-white font-bold': currentHoliday = holidays.find(holiday => holiday.day === day && holiday.month == monthIndex && holiday.year == yearIndex),\r\n                    }\r\n                    ]\"\r\n                    class=\"m-0 p-0 border border-t-0 border-slate-200 bg-white text-gray-600 h-16 w-full inline-flex justify-center items-center flex-col text-center\" >\r\n                        <div v-if=\"day <= daysInMonth\" class=\"inline-flex flex-col\">\r\n                            {{ day }}\r\n                            <span class=\"text-xs\">{{ currentHoliday?.event }}</span>\r\n                        </div>\r\n                        \r\n                    </div>\r\n                </template> "), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.fixedBoxes, function (box) {
+    var _ctx$currentHoliday, _ctx$emptyBoxHoliday;
 
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
-      key: day,
+      key: box,
       "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([[{
-        'col-start-2': day === 1 && $options.emptyColumns === 1
-      }, {
-        'col-start-3': day === 1 && $options.emptyColumns === 2
-      }, {
-        'col-start-4': day === 1 && $options.emptyColumns === 3
-      }, {
-        'col-start-5': day === 1 && $options.emptyColumns === 4
-      }, {
-        'col-start-6': day === 1 && $options.emptyColumns === 5
-      }, {
-        'col-start-7': day === 1 && $options.emptyColumns === 6
-      }, {
-        'border-r-0': (day + $options.emptyColumns) % $data.weekDays.length !== 0 && day !== $options.daysInMonth,
-        'border-b-0': $options.daysInMonth - day >= $data.weekDays.length,
-        'px-1 bg-emerald-500 text-white font-bold': _ctx.currentHoliday = $data.holidays.find(function (holiday) {
-          return holiday.day === day && holiday.month == $data.monthIndex && holiday.year == $data.yearIndex;
-        })
-      }], "m-0 p-0 border border-slate-200 bg-white text-gray-600 h-16 w-full inline-flex justify-center items-center flex-col text-center"])
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(day) + " ", 1
+        'bg-transparent': _ctx.isEmptyBox = (_ctx.day = box - $options.emptyBoxes) > $options.daysInMonth || _ctx.day < 1 && $options.fixedBoxes + _ctx.day > $options.daysInMonth,
+        'border-r-0': box % $data.weekDays.length !== 0,
+        'px-1 bg-emerald-500 text-white font-bold': (_ctx.currentHoliday = $data.holidays.find(function (holiday) {
+          return holiday.day === _ctx.day && holiday.month == $data.monthIndex && holiday.year == $data.yearIndex;
+        })) || (_ctx.emptyBoxHoliday = $data.holidays.find(function (holiday) {
+          return holiday.day === (_ctx.emptyBoxDay = $options.fixedBoxes + _ctx.day) && holiday.month == $data.monthIndex && holiday.year == $data.yearIndex;
+        }))
+      }], "m-0 p-0 border border-t-0 border-slate-200 bg-white text-gray-600 h-16 w-full inline-flex justify-center items-center flex-col text-center"])
+    }, [!_ctx.isEmptyBox ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+      key: 0
+    }, [_ctx.day <= $options.daysInMonth && _ctx.day > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+      key: 0
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.day), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_ctx$currentHoliday = _ctx.currentHoliday) === null || _ctx$currentHoliday === void 0 ? void 0 : _ctx$currentHoliday.event), 1
     /* TEXT */
-    )], 2
+    )], 64
+    /* STABLE_FRAGMENT */
+    )) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+      key: 1
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.emptyBoxDay), 1
+    /* TEXT */
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_ctx$emptyBoxHoliday = _ctx.emptyBoxHoliday) === null || _ctx$emptyBoxHoliday === void 0 ? void 0 : _ctx$emptyBoxHoliday.event), 1
+    /* TEXT */
+    )], 64
+    /* STABLE_FRAGMENT */
+    ))], 2112
+    /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */
+    )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2
     /* CLASS */
     );
   }), 128
   /* KEYED_FRAGMENT */
-  ))])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.isLoading ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+  ))])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.isLoading ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
     "class": "h-24 w-24",
     src: $data.loader,
     alt: "Loader"
   }, null, 8
   /* PROPS */
-  , _hoisted_16)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64
+  , _hoisted_17)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64
   /* STABLE_FRAGMENT */
   );
 }

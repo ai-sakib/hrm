@@ -84,15 +84,16 @@
 
         methods: {
             validateWeekDays(){
+                let weekendLimit = 3;
                 let weekendDays = this.weekDays.filter(weekDay => [1, true].includes(weekDay.is_weekend))
                 if(weekendDays.length <= 0){
                     // this.weekDays[index].is_weekend = true
                     this.$messages.error("At Least One Weekend Needed !")
                     return false
                 }
-                if(weekendDays.length > 3){
+                if(weekendDays.length > weekendLimit){
                     // this.weekDays[index].is_weekend = false
-                    this.$messages.error("Weekend Can't Be More Than 2 Days")
+                    this.$messages.error(`Weekend Can't Be More Than ${weekendLimit} Days`)
                     return false
                 }
                 return true

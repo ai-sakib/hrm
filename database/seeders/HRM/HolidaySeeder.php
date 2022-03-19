@@ -126,6 +126,95 @@ class HolidaySeeder extends Seeder
                 'description' => 'Christmas Day',
                 'created_at' => now(),
                 'updated_at' => now()
+            ],
+
+            // 2023
+            [
+                'date' => '2023-02-21',
+                'description' => 'Mother Language Day',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'date' => '2023-03-17',
+                'description' => 'Birthday of Bangabandhu',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'date' => '2023-03-26',
+                'description' => 'Independece Day',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'date' => '2023-04-14',
+                'description' => 'পহেলা বৈশাখ',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'date' => '2023-05-01',
+                'description' => 'May Day',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'date' => '2023-12-16',
+                'description' => 'Victory Day',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'date' => '2023-12-25',
+                'description' => 'Christmas Day',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+
+
+            // 2024
+            [
+                'date' => '2024-02-21',
+                'description' => 'Mother Language Day',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'date' => '2024-03-17',
+                'description' => 'Birthday of Bangabandhu',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'date' => '2024-03-26',
+                'description' => 'Independece Day',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'date' => '2024-04-14',
+                'description' => 'পহেলা বৈশাখ',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'date' => '2024-05-01',
+                'description' => 'May Day',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'date' => '2024-12-16',
+                'description' => 'Victory Day',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'date' => '2024-12-25',
+                'description' => 'Christmas Day',
+                'created_at' => now(),
+                'updated_at' => now()
             ]
         ];
 
